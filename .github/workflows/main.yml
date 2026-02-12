@@ -1,0 +1,12 @@
+name: Stream Service
+on:
+  workflow_dispatch:
+jobs:
+  run-stream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Tools
+        run: sudo apt update && sudo apt install ffmpeg -y && pip install yt-dlp
+      - name: Start Live
+        run: |
+          yt-dlp -f "best[height<=720]" -g "https://www.youtube.com/live/yTCywcu1s-E" | xargs -I {} ffmpeg -re -i {} -c:v libx264 -preset ultrafast -b:v 2500k -c:a aac -f flv "rtmp://a.rtmp.youtube.com/live2/q12g-s6wc-0y03-0ua5-6e6p"
